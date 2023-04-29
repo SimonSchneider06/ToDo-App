@@ -1,0 +1,29 @@
+{% extends "./part_templates/base.html" %} {% block title %}Aufgabe hinzufügen{% endblock %} 
+
+{% block content %} 
+
+    <div class="container">
+        <div class="mb-3 mt-3">
+            <h3 class="text-center mb-3 mt-3">Aufgabe hinzufügen</h3>
+        </div>
+        <div class="mb-3 mt-3 row g-3">
+            <form action="{{url_for('task.add_task')}}" method="POST">
+                <div class="form-floating col-12">
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Titel">
+                    <label for="title">Titel</label>
+                </div>
+                <div class="mb-3">
+                    <label for="text" class="form-label">Aufgabe</label>
+                    <textarea class="form-control" name="text" id="text" rows="3"></textarea>
+                </div>
+                
+                <div class="col-12">
+                    <button type="submit" aria-label="Daten bestätigen und einloggen" class="btn btn-primary">Aufgabe hinzufügen</button>
+                </div>
+              
+          </form>
+        </div>
+
+    </div>
+
+{% endblock %}

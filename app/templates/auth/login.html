@@ -1,0 +1,33 @@
+{% extends "./part_templates/base.html" %} {% block title %}Login{% endblock %}
+
+{% block content %} 
+    <div class="container">
+        <div class="mt-3 mb-3">
+            <h3 class="text-center">Anmelden</h3>
+            <h6 class="text-center">Noch nicht Registriert? Hier <a href="{{url_for('auth.sign_up')}}">Registrieren</a></h6>
+            <h6 class="text-center">Passwort vergessen? Hier <a href="{{url_for('auth.password_reset')}}">Zurücksetzen</a></h6>
+        </div>
+        <form class="row g-3" action="" method="POST">
+              <div class="form-floating col-12">
+                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+                <label for="email">Email addresse</label>
+              </div>
+              <div class="form-floating col-12">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Passwort">
+                <label for="password">Passwort</label>
+              </div>
+              <div class="col-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe">
+                  <label class="form-check-label" for="rememberMe">
+                    Angemeldet bleiben
+                  </label>
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" aria-label="Daten bestätigen und einloggen" class="btn btn-primary">Anmelden</button>
+              </div>
+            
+        </form>
+    </div>
+{% endblock %}

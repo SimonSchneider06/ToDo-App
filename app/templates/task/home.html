@@ -1,0 +1,40 @@
+{% extends "./part_templates/base.html" %} {% block title %}Home Page{% endblock %} 
+
+{% block content %} 
+
+<div class="container">
+
+    <div class="mb-3 mt-3">
+        <h3 class="text-center">To Do</h3>
+        <a class="d-flex justify-content-center" href="{{url_for('task.add_task')}}">Aufgabe hinzufügen</a>
+    </div>
+    <div>
+        {% if tasks %} 
+
+        <div class="d-flex flex-column align-items-center">
+            {% for task in tasks %}
+
+                <div class="d-flex justify-content-between w-75 border border-secondary rounded-2 p-3 mb-3">
+                    <div class="d-flex flex-column align-items-start">
+                        <h3>{{task.title}}</h3>
+                        <p>{{task.text}}</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <a type="button" class="btn btn-danger" aria-label="Close" href="{{url_for('task.delete', id = task.id)}}">Delete</a>
+                    </div>
+
+                </div>
+
+            {% endfor %}
+        </div>
+        {% else %} 
+
+        <div class="d-flex justify-content-center align-items-center">
+            <h3>Sie haben noch keine Aufgaben</h3>
+        </div>
+
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
