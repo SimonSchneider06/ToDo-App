@@ -45,14 +45,14 @@ class User(db.Model,UserMixin):
     #generate password reset token for password reset throught email, to make it more secure
     def generate_password_reset_token(self,expiration = 600):
         return jwt.encode(
-            {"reset_password":self.id,"expiration":time() + expiration},app.config["SECRET_KEY"],algorithm="HS256"
+            {"reset_password":self.id,"exp":time() + expiration},app.config["SECRET_KEY"],algorithm="HS256"
         )
     
     #verify the token, returns user if exists else return none
     @staticmethod
     def verify_password_reset_token(token):
         try:
-            id = jwt.encode(token,app.config["SECRET_KEY"],algorithm="HS256")["reset_password"]
+            id = jwt.decode(token,app.config["SECRET_KEY"],algorithms=["HS256"])["reset_password"]
         except:
             return
         return User.query.get(id)

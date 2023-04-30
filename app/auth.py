@@ -2,7 +2,7 @@ from flask import request, Blueprint , render_template,flash,redirect ,url_for
 from flask_login import login_required,login_user,logout_user
 from .models import User
 from app import db
-from .help_functions import send_mail
+from .help_functions import send_password_reset_email
 
 auth = Blueprint("auth", __name__)
 
@@ -80,7 +80,7 @@ def logout():
     flash("Sie haben sich erfolgreich abgemeldet",category = "success")
     return redirect(url_for("auth.login"))
 
-@auth.route("/password_reset",methods = ["POST","GET"])
+@auth.route("/forgot_password",methods = ["POST","GET"])
 def password_reset():
 
     if request.method == "POST":
@@ -90,9 +90,35 @@ def password_reset():
             flash("Bitte geben sie eine Email addresse ein",category="error")
             return redirect(url_for("auth.password_reset"))
 
-        send_mail(email,"Password Zurücksetzen","email/password_reset")
+        user = User.query.filter_by(email = email).first()
+
+        if user:
+            send_password_reset_email(user)
+
         flash("Ihnen wurde eine Email gesendet")
 
         return redirect(url_for("auth.password_reset"))
 
     return render_template("auth/password_reset.html")
+
+@auth.route("/new_password/<token>", methods = ["POST","GET"])
+def new_password(token):
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('task.home'))
+    
+    user = User.verify_password_reset_token(token)
+    #if token not verified
+    if not user:
+        return redirect(url_for("task.home"))
+    
+    if request.method == "POST":
+        password1 = request.form.get("password")
+        password2 = request.form.get("password2")
+
+        if password1 == password2:
+            user.password = password1
+            db.session.commit()
+            flash("Ihr Passwort wurde erfolgreich zurückgesetzt",category = "success")
+            return redirect(url_for('task.home'))
+        
+    return render_template("auth/new_password.html")

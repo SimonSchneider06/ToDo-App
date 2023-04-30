@@ -27,3 +27,8 @@ def send_mail(to,subject,template,**kwargs):
     msg.body = render_template(template + ".txt",**kwargs)
     msg.html = render_template(template + ".html",**kwargs)
     mail.send(msg)
+
+#send password reset email
+def send_password_reset_email(user):
+    token = user.generate_password_reset_token()
+    send_mail(user.email,"Password Reset","email/password_reset",user = user,token = token)
